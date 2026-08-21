@@ -1,3 +1,3 @@
-import { HomeScreen } from "./home-screen";
+import { InvestmentHome } from "./home-screen";
 
-export default HomeScreen;
+export default InvestmentHome;

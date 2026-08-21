@@ -1,3 +1,157 @@
+# Land Bank — Clickable Layout Prototype
+
+## Context
+
+You're building a clickable layout prototype for "Land Bank" — a fractional land investment platform. Users browse land investment opportunities, get verified (KYC), invest money, track their portfolio, and eventually get paid out or reinvest at maturity.
+
+This is a layout-exploration prototype, not a final design. The output will be reviewed and rebuilt pixel-perfect in Figma afterward. Do not spend time on custom visual polish, animations, or pixel-level spacing decisions — prioritize getting the correct screens, correct navigation flow, and correct information hierarchy on each screen.
+
+## Tech stack
+
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Untitled UI React (https://untitledui.com/react) as the component library — use their Claude starter kit as the scaffold if available, otherwise install components via their CLI as needed
+- All data is mocked/local — no real backend, auth, or payment integration
+
+## Design system rule (important)
+
+Use Untitled UI's canonical, out-of-the-box patterns — their suggested application shells, stepper/wizard components, list-detail layouts, form patterns, empty states, and status badges — exactly as documented. Do not invent new visual styling, custom color choices, or novel component compositions. If Untitled UI has more than one pattern that could fit a screen (e.g., multiple card layouts), pick their most common/default one and move on rather than deliberating. Consistency and speed matter more than originality here — I'll make the opinionated visual decisions later in Figma.
+
+## Product architecture (read this before building)
+
+The product splits into two separate experiences that should not share a shell:
+
+1. **Investor app** — a funnel (guided wizard) that leads into a personal account hub, with a few nested sub-flows branching off the hub. No dashboard/analytics-style UI anywhere in this part.
+2. **Staff app** (build this only after Part 1 is done — treat as Phase 2) — an internal ops dashboard with review queues. This one should use Untitled UI's dashboard/table-heavy patterns.
+
+Build Phase 1 (investor app) first, completely, before starting Phase 2.
+
+---
+
+## Phase 1: Investor App
+
+### A. Discover & Evaluate (entry funnel)
+
+- **INV-01 Investment Home** — landing/entry screen
+- **INV-02 Investment Opportunities** — list of land plots, with search, filter, and sort controls
+- **INV-03 Opportunity Detail** — a detail page with tabbed or sectioned content: Overview, Return Calculator, Land & Location, Valuation & Due Diligence, Risks, Documents, Plot Updates. Include Save and Share actions.
+  - **Closed state:** if a plot is fully funded/closed, show a distinct "Fully Funded / Closed" state on this same screen instead of allowing continue-to-invest.
+
+### B. Investor Verification (KYC) — nested flow
+
+Triggered from the funnel if the user isn't verified yet. This is a multi-step form wizard with save-and-resume support.
+
+1. Verification Introduction
+2. Eligibility Check
+3. Personal Information
+4. Identity Document Upload
+5. Selfie Verification
+6. Proof of Address (optional — allow skip)
+7. Investor Declarations
+8. Review Submission
+9. Verification Pending (waiting state)
+
+**Branch outcomes:**
+- **Approved** → return user to where they left off in the investment funnel
+- **Resubmission Required** → highlight the specific rejected field/document, let user correct and resubmit
+- **Rejected (not eligible)** → show rejection screen with a "Contact Support" action
+
+Every step should have a visible "Save & Exit" option that returns the user to this same step later.
+
+### C. Amount, Review, Payment & Contract
+
+- **Amount & Term Selection** — investment amount input + term selector
+- **Investment Review & Risk Assessment** — summary + risk disclosure before confirming
+- **Confirm Investment** — creates a temporary reservation with a visible countdown/expiry timer
+- **Choose Payment Method** — options: MTN Mobile Money, Airtel Money, Card, Bank Transfer
+
+Build each payment method as its own short sub-flow:
+- **Mobile Money (MTN/Airtel):** enter phone number → "prompt sent" waiting screen → success screen, or failed/timeout screen with Retry / Change Method options
+- **Card:** card entry form → processing state → success, or failed state with Retry / Change Method
+- **Bank Transfer:** instructions screen → upload proof of payment → "awaiting staff verification" waiting screen → approved (success) or rejected (with "correct & resubmit" or "contact support" options)
+
+- **Payment Successful** confirmation screen
+- **Contract flow:** Agreement Ready → Review Agreement → Sign Agreement → Agreement Executed
+- **Investment Activated** confirmation → route into the Portfolio hub (Part D) at the newly created investment's detail view
+
+### D. Portfolio (account hub — list/detail, NOT a dashboard)
+
+This is the personal home base users return to. Treat it like a "My Accounts" screen in a banking app, not an analytics dashboard.
+
+- **Portfolio Overview** — list of the user's investments (card or row per investment, showing plot name, status, current value at a glance)
+- **Investment Detail** — selecting one investment shows: Principal, Annual Return rate, Daily Accrued Profit, Projected Maturity Value, Elapsed Term, Remaining Term, Maturity Date, Investment Status
+
+From Investment Detail, provide navigation to:
+- Profit History (list/chart of profit accrual over time)
+- Payment History
+- Documents & Agreement
+- Plot Updates
+- Investment Support (contact/help)
+- Request Early Exit (see Part F)
+
+If an investment has reached maturity, Investment Detail should visibly route into the Maturity flow (Part E) instead of showing normal active-investment content.
+
+### E. Maturity, Payout & Reinvestment — nested flow
+
+Triggered automatically when an investment matures.
+
+1. **Maturity Reached** notice
+2. **Choose Maturity Action:** Payout, Reinvest, or Split (part payout / part reinvest)
+3. **Payout path:** Select a verified payout account → Review Payout → Payout Requested → (staff review state: under review / approved / rejected — show as a status screen) → Processing → Paid. If payout fails, show a Payout Failed screen with options to update the payout account or contact support.
+4. **Reinvest path:** Choose a new investment opportunity → Review Reinvestment → confirmation → lands back in Portfolio as a new active investment
+5. **Split path:** select payout account for the profit portion + choose a new opportunity for the principal portion → review combined transaction → confirm
+
+### F. Early Exit — nested flow
+
+Triggered from Investment Detail on an active (non-matured) investment.
+
+1. Early Exit Information (explains implications)
+2. Request Early Exit
+3. Select Reason
+4. Upload Supporting Documents (optional, skippable)
+5. Review Request → Submit → "Request Submitted / Staff Reviewing" waiting state
+
+**Branch outcomes:**
+- **Rejected** → show rejection + explanation, return user to active investment or contact support
+- **Approved** → show the Early Exit Offer breakdown (Principal Returned, Accrued Profit, Forfeited Profit, Applicable Charges, Estimated Payout) → user Accepts or Declines
+  - **Decline** → cancel the request, investment remains active as before
+  - **Accept** → Confirm Early Exit → Payout Processing → Paid → investment status updates to "Exited"
+
+---
+
+## Interaction / state notes
+
+- Build a simple way to toggle key states for review purposes (e.g., a small dev-only switcher, or just separate routes) for: signed-in vs. not signed-in, KYC pending/approved/rejected, payment success/failure, maturity reached vs. not. I want to be able to click through every branch outcome, not just the happy path.
+- Use realistic placeholder copy and numbers (e.g., specific plot names, sizes, prices, return percentages, dates) rather than lorem ipsum — it's easier to judge layout with real-feeling content.
+- Assume mobile-first for the investor app (mobile money flows imply a mobile-primary audience) unless building out desktop makes a screen meaningfully easier to lay out — use your judgment and note the assumption.
+
+## Out of scope for this prototype
+
+- Real authentication, payment processing, file upload handling, or backend of any kind
+- Pixel-perfect spacing, custom illustrations, or brand-specific visual identity
+- Form validation logic beyond basic required-field states
+- Accessibility auditing (Untitled UI's defaults are already solid here)
+
+---
+
+## Phase 2 (only after Phase 1 is complete): Staff Dashboard
+
+A separate internal app using Untitled UI's dashboard/table patterns, with:
+
+- **Verification Queue** — list of pending KYC submissions, approve / reject / request resubmission
+- **Bank Transfer Queue** — verify uploaded proof of payment, approve / reject
+- **Payout Queue** — verify payout account, show calculated principal + profit + tax + final amount, approve / process
+- **Early Exit Queue** — review exit requests, approve / reject
+
+---
+
+## Deliverable
+
+At the end, give me:
+
+1. A short written summary of the route/page structure you built
+2. A list of any assumptions you made or open questions you had while building
+3. Instructions for running it locally
 ## Project Overview
 
 This is an **Untitled UI React** component library project built with:
