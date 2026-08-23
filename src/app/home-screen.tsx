@@ -176,10 +176,7 @@ export const InvestmentHome = () => {
                 <div className="mx-auto max-w-7xl">
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
                         <div className="flex items-center gap-2">
-                            <div className="flex size-8 items-center justify-center rounded-lg bg-brand-solid">
-                                <span className="text-sm font-bold text-white">LB</span>
-                            </div>
-                            <span className="text-md font-semibold text-primary">Land Bank</span>
+                            <img src="/brand/landbank-logo-full.png" alt="Land Bank" className="h-8 w-auto" />
                         </div>
                         <p className="text-sm text-quaternary">&copy; 2026 Land Bank Rwanda. All rights reserved.</p>
                     </div>
