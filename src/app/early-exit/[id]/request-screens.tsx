@@ -148,7 +148,7 @@ export function SelectReasonScreen({ inv, data, updateData, goTo }: EarlyExitFlo
                             className={cx(
                                 "rounded-xl border p-4 text-left text-sm transition duration-100",
                                 isSelected
-                                    ? "border-brand bg-brand-section_subtle ring-1 ring-brand font-semibold text-primary"
+                                    ? "border-brand bg-brand-secondary ring-1 ring-brand font-semibold text-primary"
                                     : "border-secondary bg-primary text-secondary hover:bg-secondary",
                             )}
                         >
@@ -197,7 +197,7 @@ export function UploadDocumentsScreen({ inv, data, updateData, goTo }: EarlyExit
             {!data.documentsUploaded ? (
                 <button
                     onClick={() => updateData({ documentsUploaded: true })}
-                    className="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-secondary bg-primary px-6 py-10 transition duration-100 hover:border-brand hover:bg-brand-section_subtle"
+                    className="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-secondary bg-primary px-6 py-10 transition duration-100 hover:border-brand hover:bg-brand-secondary"
                 >
                     <div className="flex size-10 items-center justify-center rounded-full bg-secondary">
                         <UploadCloud02 className="size-5 text-fg-quaternary" />
@@ -212,8 +212,8 @@ export function UploadDocumentsScreen({ inv, data, updateData, goTo }: EarlyExit
                     </div>
                 </button>
             ) : (
-                <div className="flex items-center gap-3 rounded-xl border border-brand bg-brand-section_subtle p-4">
-                    <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-primary">
+                <div className="flex items-center gap-3 rounded-xl border border-brand bg-brand-secondary p-4">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-solid">
                         <File06 className="size-4.5 text-fg-white" />
                     </div>
                     <div className="flex-1">

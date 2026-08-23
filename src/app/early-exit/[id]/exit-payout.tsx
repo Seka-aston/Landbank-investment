@@ -44,14 +44,14 @@ export function ExitPayoutAccountSelect({ inv, data, updateData, goTo }: EarlyEx
                             className={cx(
                                 "flex items-center gap-3 rounded-xl border p-4 text-left transition duration-100",
                                 isSelected
-                                    ? "border-brand bg-brand-section_subtle ring-1 ring-brand"
+                                    ? "border-brand bg-brand-secondary ring-1 ring-brand"
                                     : "border-secondary bg-primary hover:bg-secondary",
                             )}
                         >
                             <div
                                 className={cx(
                                     "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                                    isSelected ? "bg-brand-primary" : "bg-secondary",
+                                    isSelected ? "bg-brand-solid" : "bg-secondary",
                                 )}
                             >
                                 <Icon

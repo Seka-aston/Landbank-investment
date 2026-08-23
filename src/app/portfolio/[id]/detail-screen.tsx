@@ -131,7 +131,7 @@ function OverviewView({ inv, goTo }: { inv: PortfolioInvestment; goTo: (p: SubPa
 
             {/* Matured banner */}
             {inv.status === "matured" && (
-                <div className="flex items-start gap-3 rounded-xl border border-brand bg-brand-section_subtle p-4">
+                <div className="flex items-start gap-3 rounded-xl border border-brand bg-brand-secondary p-4">
                     <FeaturedIcon icon={CheckCircle} size="sm" color="brand" theme="light" />
                     <div className="flex-1">
                         <p className="text-sm font-semibold text-primary">This investment has matured</p>

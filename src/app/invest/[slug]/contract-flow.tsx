@@ -41,7 +41,7 @@ export function ContractReady({ opp, data, goTo }: FlowProps) {
                 </p>
             </div>
 
-            <div className="flex items-center gap-4 rounded-xl border border-brand bg-brand-section_subtle p-4">
+            <div className="flex items-center gap-4 rounded-xl border border-brand bg-brand-secondary p-4">
                 <FeaturedIcon icon={File06} size="md" color="brand" theme="light" />
                 <div>
                     <p className="text-sm font-semibold text-primary">Investment Agreement</p>

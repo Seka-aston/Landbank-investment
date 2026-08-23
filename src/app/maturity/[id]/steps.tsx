@@ -124,14 +124,14 @@ export function ChooseActionScreen({ inv, data, updateData, goTo }: MaturityFlow
                             className={cx(
                                 "flex items-start gap-4 rounded-xl border p-4 text-left transition duration-100",
                                 isSelected
-                                    ? "border-brand bg-brand-section_subtle ring-1 ring-brand"
+                                    ? "border-brand bg-brand-secondary ring-1 ring-brand"
                                     : "border-secondary bg-primary hover:bg-secondary",
                             )}
                         >
                             <div
                                 className={cx(
                                     "flex size-10 shrink-0 items-center justify-center rounded-lg",
-                                    isSelected ? "bg-brand-primary" : "bg-secondary",
+                                    isSelected ? "bg-brand-solid" : "bg-secondary",
                                 )}
                             >
                                 <option.icon

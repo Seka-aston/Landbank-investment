@@ -47,7 +47,7 @@ function OpportunityPicker({
                         className={cx(
                             "flex items-center gap-3 rounded-xl border p-4 text-left transition duration-100",
                             isSelected
-                                ? "border-brand bg-brand-section_subtle ring-1 ring-brand"
+                                ? "border-brand bg-brand-secondary ring-1 ring-brand"
                                 : "border-secondary bg-primary hover:bg-secondary",
                         )}
                     >
@@ -142,7 +142,7 @@ export function ReinvestReview({ inv, data, goTo }: MaturityFlowProps) {
                 </div>
             </div>
 
-            <div className="rounded-xl border border-brand bg-brand-section_subtle p-4">
+            <div className="rounded-xl border border-brand bg-brand-secondary p-4">
                 <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-brand-secondary">
                     To (New Investment)
                 </h4>
@@ -284,14 +284,14 @@ export function SplitPayoutAccount({ inv, data, updateData, goTo }: MaturityFlow
                             className={cx(
                                 "flex items-center gap-3 rounded-xl border p-4 text-left transition duration-100",
                                 isSelected
-                                    ? "border-brand bg-brand-section_subtle ring-1 ring-brand"
+                                    ? "border-brand bg-brand-secondary ring-1 ring-brand"
                                     : "border-secondary bg-primary hover:bg-secondary",
                             )}
                         >
                             <div
                                 className={cx(
                                     "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                                    isSelected ? "bg-brand-primary" : "bg-secondary",
+                                    isSelected ? "bg-brand-solid" : "bg-secondary",
                                 )}
                             >
                                 <Icon
@@ -422,7 +422,7 @@ export function SplitReview({ inv, data, goTo }: MaturityFlowProps) {
             </div>
 
             {/* Reinvest portion */}
-            <div className="rounded-xl border border-brand bg-brand-section_subtle p-4">
+            <div className="rounded-xl border border-brand bg-brand-secondary p-4">
                 <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand-secondary">
                     <TrendUp01 className="size-4" />
                     Reinvestment (Principal)

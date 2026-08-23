@@ -73,7 +73,7 @@ export function StepIntroduction() {
                 </div>
             </div>
 
-            <div className="rounded-lg bg-brand-section_subtle p-4">
+            <div className="rounded-lg bg-brand-secondary p-4">
                 <p className="text-sm text-tertiary">
                     <strong className="text-secondary">Estimated time:</strong> 5–10 minutes. You can save your progress and return
                     later at any time using the "Save & Exit" button.
@@ -566,7 +566,7 @@ export function StepReview({ formData, onGoToStep }: { formData: KYCFormData; on
                 </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-lg border border-brand bg-brand-section_subtle p-4">
+            <div className="flex items-start gap-3 rounded-lg border border-brand bg-brand-secondary p-4">
                 <FileCheck02 className="mt-0.5 size-5 shrink-0 text-fg-brand-primary" />
                 <div>
                     <p className="text-sm font-semibold text-primary">Ready to submit</p>

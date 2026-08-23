@@ -94,7 +94,7 @@ export function AmountStep({ opp, data, updateData, goTo }: FlowProps) {
                             className={cx(
                                 "flex-1 rounded-lg border p-3 text-center transition duration-100",
                                 data.term === t
-                                    ? "border-brand bg-brand-section_subtle"
+                                    ? "border-brand bg-brand-secondary"
                                     : "border-secondary bg-primary hover:bg-secondary",
                             )}
                         >
@@ -309,7 +309,7 @@ export function ConfirmStep({ opp, data, goTo }: FlowProps) {
                 <h2 className="text-display-xs font-semibold text-primary">Confirm Investment</h2>
             </div>
 
-            <div className="flex items-center justify-center gap-3 rounded-xl border border-brand bg-brand-section_subtle p-4">
+            <div className="flex items-center justify-center gap-3 rounded-xl border border-brand bg-brand-secondary p-4">
                 <Clock className="size-5 text-fg-brand-primary" />
                 <div className="text-center">
                     <p className="text-xs text-tertiary">Reservation expires in</p>
@@ -413,7 +413,7 @@ export function PaymentMethodStep({
                             onClick={() => onSelectMethod(method.id)}
                             className={cx(
                                 "flex items-start gap-3.5 rounded-xl border p-4 text-left transition duration-100",
-                                isSelected ? "border-brand bg-brand-section_subtle" : "border-secondary bg-primary hover:bg-secondary",
+                                isSelected ? "border-brand bg-brand-secondary" : "border-secondary bg-primary hover:bg-secondary",
                             )}
                         >
                             <div
@@ -436,7 +436,7 @@ export function PaymentMethodStep({
                                     isSelected ? "border-brand bg-brand-solid" : "border-secondary",
                                 )}
                             >
-                                {isSelected && <div className="size-2 rounded-full bg-white" />}
+                                {isSelected && <div className="size-2 rounded-full bg-fg-white" />}
                             </div>
                         </button>
                     );
