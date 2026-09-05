@@ -117,19 +117,15 @@ export function StepEligibility({ formData, updateForm }: StepProps) {
                     isSelected={formData.isRwandanResident}
                     onChange={(checked) => updateForm({ isRwandanResident: checked })}
                     size="md"
-                >
-                    <span className="text-sm font-medium text-secondary">
-                        I am currently a resident of Rwanda or have a valid Rwandan address
-                    </span>
-                </Checkbox>
+                    label="I am currently a resident of Rwanda or have a valid Rwandan address"
+                />
 
                 <Checkbox
                     isSelected={formData.isOver18}
                     onChange={(checked) => updateForm({ isOver18: checked })}
                     size="md"
-                >
-                    <span className="text-sm font-medium text-secondary">I am 18 years of age or older</span>
-                </Checkbox>
+                    label="I am 18 years of age or older"
+                />
             </div>
 
             {(!formData.isOver18 || !formData.isRwandanResident) && (

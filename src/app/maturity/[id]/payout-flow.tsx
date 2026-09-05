@@ -11,6 +11,7 @@ import {
     Hourglass03,
     Wallet04,
     Phone,
+    Plus,
     ShieldTick,
     Rocket01,
     Mail01,
@@ -71,6 +72,16 @@ export function PayoutAccountSelect({ inv, data, updateData, goTo }: MaturityFlo
                         </button>
                     );
                 })}
+            </div>
+
+            <div className="flex items-center gap-2">
+                <Button href="/account" color="link-color" size="sm" iconLeading={Plus}>
+                    Add new account
+                </Button>
+                <span className="text-tertiary">·</span>
+                <Button href="/account" color="link-gray" size="sm">
+                    Manage accounts
+                </Button>
             </div>
 
             <div className="flex items-center justify-between pt-2">

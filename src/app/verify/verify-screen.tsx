@@ -34,9 +34,9 @@ type StepId = (typeof STEPS)[number]["id"];
 type OutcomeId = "pending" | "approved" | "resubmission" | "rejected";
 
 const initialFormData: KYCFormData = {
-    nationality: "Rwandan",
-    isRwandanResident: true,
-    isOver18: true,
+    nationality: "",
+    isRwandanResident: false,
+    isOver18: false,
     firstName: "",
     lastName: "",
     dateOfBirth: "",
@@ -100,6 +100,7 @@ function Stepper({ steps, currentIndex }: { steps: typeof STEPS; currentIndex: n
 export const VerifyScreen = () => {
     const searchParams = useSearchParams();
     const outcomeParam = searchParams.get("outcome") as OutcomeId | null;
+    const returnTo = searchParams.get("returnTo");
 
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [formData, setFormData] = useState<KYCFormData>(initialFormData);
@@ -154,7 +155,7 @@ export const VerifyScreen = () => {
                 <InvestorHeader />
                 <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6">
                     {outcome === "pending" && <OutcomePending onSetOutcome={handleSetOutcome} />}
-                    {outcome === "approved" && <OutcomeApproved />}
+                    {outcome === "approved" && <OutcomeApproved returnTo={returnTo} />}
                     {outcome === "resubmission" && <OutcomeResubmission formData={formData} onRestart={handleRestart} />}
                     {outcome === "rejected" && <OutcomeRejected />}
                 </div>
@@ -193,7 +194,7 @@ export const VerifyScreen = () => {
                 {/* Save & Exit */}
                 <div className="mb-4 flex items-center justify-between">
                     <h1 className="text-lg font-semibold text-primary">Identity Verification</h1>
-                    <Button href="/opportunities" color="tertiary" size="sm" iconLeading={LogOut01}>
+                    <Button href={returnTo ? `/opportunities/${returnTo}` : "/opportunities"} color="tertiary" size="sm" iconLeading={LogOut01}>
                         Save &amp; Exit
                     </Button>
                 </div>

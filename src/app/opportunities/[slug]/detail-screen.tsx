@@ -531,7 +531,7 @@ export const OpportunityDetailScreen = ({ params }: { params: Promise<{ slug: st
                                                 </div>
                                             </div>
                                             <Button
-                                                href={isVerified ? `/invest/${opp.slug}` : "/verify"}
+                                                href={isVerified ? `/invest/${opp.slug}` : `/verify?returnTo=${opp.slug}`}
                                                 color="primary"
                                                 size="lg"
                                                 className="mt-2 w-full"

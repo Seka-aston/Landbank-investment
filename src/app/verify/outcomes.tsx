@@ -80,7 +80,7 @@ export function OutcomePending({ onSetOutcome }: { onSetOutcome: (outcome: Outco
 
 // ─── Approved ────────────────────────────────────────────────────────────────
 
-export function OutcomeApproved() {
+export function OutcomeApproved({ returnTo }: { returnTo?: string | null }) {
     return (
         <div className="flex flex-col items-center gap-6 text-center">
             <FeaturedIcon icon={CheckCircle} size="xl" color="success" theme="light" />
@@ -115,9 +115,15 @@ export function OutcomeApproved() {
             </div>
 
             <div className="flex w-full flex-col gap-3 sm:flex-row">
-                <Button href="/opportunities" color="primary" size="lg" iconTrailing={ArrowRight} className="flex-1">
-                    Start Investing
-                </Button>
+                {returnTo ? (
+                    <Button href={`/invest/${returnTo}`} color="primary" size="lg" iconTrailing={ArrowRight} className="flex-1">
+                        Continue to Investment
+                    </Button>
+                ) : (
+                    <Button href="/opportunities" color="primary" size="lg" iconTrailing={ArrowRight} className="flex-1">
+                        Start Investing
+                    </Button>
+                )}
                 <Button href="/" color="secondary" size="lg" className="flex-1">
                     Go to Home
                 </Button>

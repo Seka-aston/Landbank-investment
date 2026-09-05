@@ -7,6 +7,7 @@ import {
     TrendUp01,
     Wallet04,
     Phone,
+    Plus,
     Rocket01,
     ShieldTick,
 } from "@untitledui/icons";
@@ -313,6 +314,16 @@ export function SplitPayoutAccount({ inv, data, updateData, goTo }: MaturityFlow
                         </button>
                     );
                 })}
+            </div>
+
+            <div className="flex items-center gap-2">
+                <Button href="/account" color="link-color" size="sm" iconLeading={Plus}>
+                    Add new account
+                </Button>
+                <span className="text-tertiary">·</span>
+                <Button href="/account" color="link-gray" size="sm">
+                    Manage accounts
+                </Button>
             </div>
 
             <div className="flex items-center justify-between pt-2">

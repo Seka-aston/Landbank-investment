@@ -13,6 +13,7 @@ const navItems = [
 
 export const InvestorHeader = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
 
     return (
         <header className="sticky top-0 z-50 border-b border-secondary bg-primary">
@@ -31,12 +32,23 @@ export const InvestorHeader = () => {
                 </nav>
 
                 <div className="hidden items-center gap-3 md:flex">
-                    <Button color="secondary" size="sm">
-                        Log in
-                    </Button>
-                    <Button color="primary" size="sm" iconLeading={User01}>
-                        Sign up
-                    </Button>
+                    {loggedIn ? (
+                        <a href="/account" className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-primary_hover transition duration-100">
+                            <div className="flex size-8 items-center justify-center rounded-full bg-brand-secondary text-xs font-semibold text-brand-secondary">
+                                JM
+                            </div>
+                            <span className="text-sm font-medium text-secondary">Jean M.</span>
+                        </a>
+                    ) : (
+                        <>
+                            <Button href="/login" color="secondary" size="sm">
+                                Log in
+                            </Button>
+                            <Button href="/signup" color="primary" size="sm" iconLeading={User01}>
+                                Sign up
+                            </Button>
+                        </>
+                    )}
                 </div>
 
                 <button
@@ -63,15 +75,49 @@ export const InvestorHeader = () => {
                         ))}
                     </nav>
                     <div className="flex flex-col gap-3 border-t border-secondary pt-3">
-                        <Button color="secondary" size="md" className={cx("w-full")}>
-                            Log in
-                        </Button>
-                        <Button color="primary" size="md" className={cx("w-full")}>
-                            Sign up
-                        </Button>
+                        {loggedIn ? (
+                            <a href="/account" className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-md font-medium text-secondary hover:bg-primary_hover">
+                                <div className="flex size-8 items-center justify-center rounded-full bg-brand-secondary text-xs font-semibold text-brand-secondary">
+                                    JM
+                                </div>
+                                <span>My Account</span>
+                            </a>
+                        ) : (
+                            <>
+                                <Button href="/login" color="secondary" size="md" className={cx("w-full")}>
+                                    Log in
+                                </Button>
+                                <Button href="/signup" color="primary" size="md" className={cx("w-full")}>
+                                    Sign up
+                                </Button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
+
+            {/* Dev toggle: logged in / logged out */}
+            <div className="absolute right-2 top-17 z-50 flex items-center gap-1.5 rounded-b-lg border border-t-0 border-secondary bg-secondary px-2 py-1">
+                <span className="text-[10px] font-medium text-quaternary">Auth:</span>
+                <button
+                    onClick={() => setLoggedIn(false)}
+                    className={cx(
+                        "rounded px-1.5 py-0.5 text-[10px] font-medium transition duration-100",
+                        !loggedIn ? "bg-brand-solid text-white" : "text-quaternary hover:text-secondary",
+                    )}
+                >
+                    Guest
+                </button>
+                <button
+                    onClick={() => setLoggedIn(true)}
+                    className={cx(
+                        "rounded px-1.5 py-0.5 text-[10px] font-medium transition duration-100",
+                        loggedIn ? "bg-brand-solid text-white" : "text-quaternary hover:text-secondary",
+                    )}
+                >
+                    Logged in
+                </button>
+            </div>
         </header>
     );
 };
