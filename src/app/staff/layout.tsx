@@ -101,6 +101,13 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
                         <Home02 className="size-5 text-fg-quaternary" />
                         Switch to Investor App
                     </a>
+                    <a
+                        href="/login"
+                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-tertiary hover:bg-primary_hover hover:text-secondary transition duration-100"
+                    >
+                        <LogOut01 className="size-5 text-fg-quaternary" />
+                        Sign Out
+                    </a>
                     <div className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 ring-1 ring-secondary ring-inset">
                         <div className="flex size-9 items-center justify-center rounded-full bg-brand-secondary text-xs font-semibold text-brand-secondary">
                             AO
@@ -167,7 +174,7 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
                                 );
                             })}
                         </nav>
-                        <div className="mt-3 border-t border-secondary pt-3">
+                        <div className="mt-3 flex flex-col gap-2 border-t border-secondary pt-3">
                             <Button
                                 href="/"
                                 color="secondary"
@@ -176,6 +183,15 @@ export default function StaffLayout({ children }: { children: ReactNode }) {
                                 className="w-full"
                             >
                                 Switch to Investor App
+                            </Button>
+                            <Button
+                                href="/login"
+                                color="secondary"
+                                size="sm"
+                                iconLeading={LogOut01}
+                                className="w-full"
+                            >
+                                Sign Out
                             </Button>
                         </div>
                     </div>
