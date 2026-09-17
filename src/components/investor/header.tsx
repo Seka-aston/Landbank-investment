@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Home02, BarChart01, Briefcase01, User01, Menu01, X } from "@untitledui/icons";
 import { Button } from "@/components/base/buttons/button";
+import { LandBankLogoMark, LandBankLogoFull } from "@/components/investor/landbank-logo";
 import { cx } from "@/utils/cx";
 
 const navItems = [
@@ -19,8 +20,8 @@ export const InvestorHeader = () => {
         <header className="sticky top-0 z-50 border-b border-secondary bg-primary">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <a href="/" className="flex items-center gap-2">
-                    <img src="/brand/landbank-logo-icon.png" alt="Land Bank" className="size-8 md:hidden" />
-                    <img src="/brand/landbank-logo-full.png" alt="Land Bank" className="hidden h-8 w-auto md:block" />
+                    <LandBankLogoMark className="size-8 md:hidden" />
+                    <LandBankLogoFull className="hidden md:flex" />
                 </a>
 
                 <nav className="hidden items-center gap-1 md:flex">

@@ -5,6 +5,7 @@ import { Badge, BadgeWithDot } from "@/components/base/badges/badges";
 import { Button } from "@/components/base/buttons/button";
 import { FeaturedIcon } from "@/components/foundations/featured-icon/featured-icon";
 import { InvestorHeader } from "@/components/investor/header";
+import { LandBankLogoFull } from "@/components/investor/landbank-logo";
 import { OpportunityCard } from "@/components/investor/opportunity-card";
 import { opportunities, formatRWF } from "@/lib/mock-data";
 
@@ -175,10 +176,11 @@ export const InvestmentHome = () => {
             <footer className="border-t border-secondary bg-primary px-4 py-8 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-7xl">
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-                        <div className="flex items-center gap-2">
-                            <img src="/brand/landbank-logo-full.png" alt="Land Bank" className="h-8 w-auto" />
+                        <LandBankLogoFull />
+                        <div className="flex items-center gap-4">
+                            <p className="text-sm text-quaternary">&copy; 2026 Land Bank Rwanda. All rights reserved.</p>
+                            <a href="/staff" className="text-xs font-medium text-quaternary hover:text-tertiary transition duration-100">Staff Portal &rarr;</a>
                         </div>
-                        <p className="text-sm text-quaternary">&copy; 2026 Land Bank Rwanda. All rights reserved.</p>
                     </div>
                 </div>
             </footer>
