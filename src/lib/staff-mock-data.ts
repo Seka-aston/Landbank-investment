@@ -1,6 +1,6 @@
 export type KycStatus = "pending" | "approved" | "rejected" | "resubmission";
 export type TransferStatus = "pending" | "approved" | "rejected";
-export type PayoutStatus = "pending" | "approved" | "processing" | "rejected";
+export type PayoutStatus = "pending" | "approved" | "processing" | "paid" | "rejected";
 export type ExitStatus = "pending" | "approved" | "rejected";
 
 export interface KycSubmission {

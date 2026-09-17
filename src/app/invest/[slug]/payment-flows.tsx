@@ -453,6 +453,8 @@ export function BankTransferRejected({ goTo }: FlowProps) {
 
 // ─── Payment Successful (shared) ─────────────────────────────────────────────
 
+const stableTxnId = `TXN-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
+
 export function PaymentSuccess({ opp, data, goTo, paymentMethod }: FlowProps) {
     const actualInvestment = data.shares * opp.sharePrice;
     const methodLabels: Record<string, string> = {
@@ -461,7 +463,7 @@ export function PaymentSuccess({ opp, data, goTo, paymentMethod }: FlowProps) {
         card: "Card Payment",
         "bank-transfer": "Bank Transfer",
     };
-    const txnId = `TXN-${Date.now().toString(36).toUpperCase().slice(-8)}`;
+    const txnId = stableTxnId;
 
     return (
         <div className="flex flex-col items-center gap-6 py-4 text-center">

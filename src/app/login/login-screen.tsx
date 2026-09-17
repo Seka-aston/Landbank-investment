@@ -37,7 +37,7 @@ export const LoginScreen = () => {
 
                         <div className="flex items-center justify-between">
                             <Checkbox label="Remember me" size="sm" />
-                            <Button href="/forgot-password" color="link-color" size="sm">
+                            <Button color="link-color" size="sm" onPress={() => alert("Password reset flow not available in prototype")}>
                                 Forgot password?
                             </Button>
                         </div>
@@ -55,7 +55,7 @@ export const LoginScreen = () => {
                             </div>
                         </div>
 
-                        <Button href="/login/phone" color="secondary" size="lg" className="w-full">
+                        <Button color="secondary" size="lg" className="w-full" onPress={() => alert("Phone login not available in prototype")}>
                             Log in with phone number
                         </Button>
                     </div>

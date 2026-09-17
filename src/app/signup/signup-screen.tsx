@@ -44,7 +44,7 @@ export const SignupScreen = () => {
                                 <Button color="link-gray" size="sm" iconLeading={ArrowLeft} onClick={() => setStep("details")}>
                                     Back
                                 </Button>
-                                <Button color="link-color" size="sm">
+                                <Button color="link-color" size="sm" onPress={() => alert("Code resent! (prototype)")}>
                                     Resend code
                                 </Button>
                             </div>

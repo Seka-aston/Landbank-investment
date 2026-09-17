@@ -5,14 +5,12 @@ import {
     CheckCircle,
     XCircle,
     AlertTriangle,
-    Clock,
     Eye,
     ChevronLeft,
     User01,
     Mail01,
     Phone01,
     FileCheck02,
-    ShieldTick,
     AlertCircle,
 } from "@untitledui/icons";
 import { BadgeWithDot } from "@/components/base/badges/badges";
@@ -431,7 +429,7 @@ function DetailView({
 
                 {/* Sidebar actions */}
                 <div className="space-y-6">
-                    {item.status === "pending" && (
+                    {(item.status === "pending" || item.status === "resubmission") && (
                         <div className="rounded-xl bg-primary p-6 shadow-xs ring-1 ring-secondary">
                             <h3 className="mb-4 text-md font-semibold text-primary">
                                 Review Actions

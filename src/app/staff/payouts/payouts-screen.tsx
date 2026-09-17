@@ -25,11 +25,12 @@ import {
 
 const statusConfig: Record<
     PayoutStatus,
-    { label: string; color: "warning" | "success" | "error" | "blue" }
+    { label: string; color: "warning" | "success" | "error" | "blue" | "brand" }
 > = {
     pending: { label: "Pending Review", color: "warning" },
     approved: { label: "Approved", color: "success" },
     processing: { label: "Processing", color: "blue" },
+    paid: { label: "Paid", color: "brand" },
     rejected: { label: "Rejected", color: "error" },
 };
 
@@ -70,6 +71,7 @@ export const PayoutsScreen = () => {
                 onBack={() => setSelected(null)}
                 onApprove={() => updateStatus(selected.id, "approved")}
                 onProcess={() => updateStatus(selected.id, "processing")}
+                onMarkPaid={() => updateStatus(selected.id, "paid")}
                 onReject={(reason) =>
                     updateStatus(selected.id, "rejected", reason)
                 }
@@ -101,6 +103,7 @@ export const PayoutsScreen = () => {
                         "pending",
                         "approved",
                         "processing",
+                        "paid",
                         "rejected",
                     ] as FilterStatus[]
                 ).map((s) => {
@@ -239,12 +242,14 @@ function DetailView({
     onBack,
     onApprove,
     onProcess,
+    onMarkPaid,
     onReject,
 }: {
     item: PayoutRequest;
     onBack: () => void;
     onApprove: () => void;
     onProcess: () => void;
+    onMarkPaid: () => void;
     onReject: (reason: string) => void;
 }) {
     const sc = statusConfig[item.status];
@@ -491,6 +496,37 @@ function DetailView({
                                     </div>
                                     <div className="text-xs text-tertiary">
                                         Payout is being transferred to the
+                                        investor&apos;s account.
+                                    </div>
+                                </div>
+                            </div>
+                            <Button
+                                size="md"
+                                color="primary"
+                                iconLeading={CheckCircle}
+                                onPress={onMarkPaid}
+                                className="mt-4 w-full"
+                            >
+                                Mark as Paid
+                            </Button>
+                        </div>
+                    )}
+
+                    {item.status === "paid" && (
+                        <div className="rounded-xl bg-success-secondary p-6 shadow-xs ring-1 ring-secondary">
+                            <div className="flex items-center gap-3">
+                                <FeaturedIcon
+                                    icon={CheckCircle}
+                                    color="success"
+                                    theme="light"
+                                    size="md"
+                                />
+                                <div>
+                                    <div className="text-sm font-semibold text-success-primary">
+                                        Payout Complete
+                                    </div>
+                                    <div className="text-xs text-tertiary">
+                                        Funds have been transferred to the
                                         investor&apos;s account.
                                     </div>
                                 </div>

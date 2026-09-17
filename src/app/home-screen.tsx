@@ -7,7 +7,7 @@ import { FeaturedIcon } from "@/components/foundations/featured-icon/featured-ic
 import { InvestorHeader } from "@/components/investor/header";
 import { LandBankLogoFull } from "@/components/investor/landbank-logo";
 import { OpportunityCard } from "@/components/investor/opportunity-card";
-import { opportunities, formatRWF } from "@/lib/mock-data";
+import { opportunities } from "@/lib/mock-data";
 
 const stats = [
     { label: "Total Land Value Listed", value: "RWF 1.13B" },
@@ -64,7 +64,7 @@ export const InvestmentHome = () => {
                             <Button href="/opportunities" color="primary" size="xl" iconTrailing={ArrowRight}>
                                 Browse Opportunities
                             </Button>
-                            <Button href="/opportunities" color="secondary" size="xl">
+                            <Button href="#how-it-works" color="secondary" size="xl">
                                 How It Works
                             </Button>
                         </div>
@@ -104,7 +104,7 @@ export const InvestmentHome = () => {
             </section>
 
             {/* How It Works */}
-            <section className="border-t border-secondary bg-primary px-4 py-16 sm:px-6 lg:px-8">
+            <section id="how-it-works" className="border-t border-secondary bg-primary px-4 py-16 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-7xl">
                     <div className="mx-auto max-w-2xl text-center">
                         <h2 className="text-display-xs font-semibold text-primary sm:text-display-sm">How It Works</h2>

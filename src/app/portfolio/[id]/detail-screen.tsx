@@ -317,7 +317,7 @@ function DocumentsView({ inv, goTo }: { inv: PortfolioInvestment; goTo: (p: SubP
                             <p className="truncate text-sm font-medium text-primary">{doc.name}</p>
                             <p className="text-xs text-tertiary">{doc.type} · {doc.size}</p>
                         </div>
-                        <Button color="tertiary" size="xs" iconLeading={Download01}>
+                        <Button color="tertiary" size="xs" iconLeading={Download01} onPress={() => alert(`Downloading ${doc.name}...\n(Not available in prototype)`)}>
                             Download
                         </Button>
                     </div>

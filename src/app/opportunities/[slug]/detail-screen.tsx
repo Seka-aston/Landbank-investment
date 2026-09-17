@@ -308,7 +308,7 @@ function DocumentsTab({ opp }: { opp: InvestmentOpportunity }) {
                             </p>
                         </div>
                     </div>
-                    <Button color="tertiary" size="sm" iconLeading={Download01}>
+                    <Button color="tertiary" size="sm" iconLeading={Download01} onPress={() => alert(`Downloading ${doc.name}...\n(Not available in prototype)`)}>
                         Download
                     </Button>
                 </div>
@@ -349,6 +349,7 @@ function PlotUpdatesTab({ opp }: { opp: InvestmentOpportunity }) {
 export const OpportunityDetailScreen = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params);
     const opp = getOpportunityBySlug(slug);
+    const [isVerified, setIsVerified] = useState(true);
 
     if (!opp) {
         return (
@@ -365,8 +366,6 @@ export const OpportunityDetailScreen = ({ params }: { params: Promise<{ slug: st
             </div>
         );
     }
-
-    const [isVerified, setIsVerified] = useState(true);
 
     const isClosed = opp.status === "fully-funded";
     const status = statusConfig[opp.status];
@@ -400,10 +399,10 @@ export const OpportunityDetailScreen = ({ params }: { params: Promise<{ slug: st
                         </div>
                     )}
                     <div className="absolute top-3 right-3 flex gap-2">
-                        <Button color="secondary" size="sm" iconLeading={BookmarkCheck}>
+                        <Button color="secondary" size="sm" iconLeading={BookmarkCheck} onPress={() => alert("Opportunity saved! (prototype)")}>
                             Save
                         </Button>
-                        <Button color="secondary" size="sm" iconLeading={Share07}>
+                        <Button color="secondary" size="sm" iconLeading={Share07} onPress={() => alert("Share link copied! (prototype)")}>
                             Share
                         </Button>
                     </div>

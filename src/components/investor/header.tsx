@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Home02, BarChart01, Briefcase01, User01, Menu01, X } from "@untitledui/icons";
 import { Button } from "@/components/base/buttons/button";
 import { LandBankLogoMark, LandBankLogoFull } from "@/components/investor/landbank-logo";
@@ -12,9 +12,24 @@ const navItems = [
     { label: "Portfolio", href: "/portfolio", icon: Briefcase01 },
 ];
 
+function usePersistedAuth() {
+    const [loggedIn, setLoggedIn] = useState(true);
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem("lb-dev-auth");
+            if (stored !== null) setLoggedIn(stored === "true");
+        } catch {}
+    }, []);
+    const setAuth = (v: boolean) => {
+        setLoggedIn(v);
+        try { localStorage.setItem("lb-dev-auth", String(v)); } catch {}
+    };
+    return [loggedIn, setAuth] as const;
+}
+
 export const InvestorHeader = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(true);
+    const [loggedIn, setLoggedIn] = usePersistedAuth();
 
     return (
         <header className="sticky top-0 z-50 border-b border-secondary bg-primary">
@@ -68,6 +83,7 @@ export const InvestorHeader = () => {
                             <a
                                 key={item.label}
                                 href={item.href}
+                                onClick={() => setMobileOpen(false)}
                                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-md font-medium text-secondary hover:bg-primary_hover"
                             >
                                 <item.icon className="size-5 text-fg-quaternary" />
@@ -77,7 +93,7 @@ export const InvestorHeader = () => {
                     </nav>
                     <div className="flex flex-col gap-3 border-t border-secondary pt-3">
                         {loggedIn ? (
-                            <a href="/account" className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-md font-medium text-secondary hover:bg-primary_hover">
+                            <a href="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-md font-medium text-secondary hover:bg-primary_hover">
                                 <div className="flex size-8 items-center justify-center rounded-full bg-brand-secondary text-xs font-semibold text-brand-secondary">
                                     JM
                                 </div>

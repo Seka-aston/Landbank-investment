@@ -234,6 +234,7 @@ function DetailView({
     const sc = statusConfig[item.status];
     const [showReject, setShowReject] = useState(false);
     const [reason, setReason] = useState("");
+    const [checklist, setChecklist] = useState<Record<string, boolean>>({});
 
     return (
         <div className="p-4 sm:p-6 lg:p-8">
@@ -343,6 +344,11 @@ function DetailView({
                                 size="sm"
                                 color="secondary"
                                 iconLeading={Download01}
+                                onPress={() =>
+                                    alert(
+                                        `Opening ${item.proofFileName}...\n(File preview not available in prototype)`,
+                                    )
+                                }
                             >
                                 View
                             </Button>
@@ -368,10 +374,24 @@ function DetailView({
                                 Verification Checklist
                             </h3>
                             <div className="mb-4 space-y-2.5">
-                                <ChecklistItem label="Reference code matches" />
-                                <ChecklistItem label="Transfer amount matches expected amount" />
-                                <ChecklistItem label="Sender bank and account match" />
-                                <ChecklistItem label="Receipt appears genuine and unaltered" />
+                                {[
+                                    "Reference code matches",
+                                    "Transfer amount matches expected amount",
+                                    "Sender bank and account match",
+                                    "Receipt appears genuine and unaltered",
+                                ].map((label) => (
+                                    <ChecklistItem
+                                        key={label}
+                                        label={label}
+                                        checked={!!checklist[label]}
+                                        onChange={(v) =>
+                                            setChecklist((prev) => ({
+                                                ...prev,
+                                                [label]: v,
+                                            }))
+                                        }
+                                    />
+                                ))}
                             </div>
                             {!showReject ? (
                                 <div className="flex flex-col gap-3">
@@ -515,12 +535,25 @@ function DetailView({
     );
 }
 
-function ChecklistItem({ label }: { label: string }) {
+function ChecklistItem({
+    label,
+    checked,
+    onChange,
+}: {
+    label: string;
+    checked: boolean;
+    onChange: (v: boolean) => void;
+}) {
     return (
-        <div className="flex items-center gap-2.5">
-            <div className="size-4 rounded border border-secondary" />
+        <label className="flex cursor-pointer items-center gap-2.5">
+            <input
+                type="checkbox"
+                checked={checked}
+                onChange={(e) => onChange(e.target.checked)}
+                className="size-4 rounded border-primary accent-brand-600"
+            />
             <span className="text-sm text-secondary">{label}</span>
-        </div>
+        </label>
     );
 }
 

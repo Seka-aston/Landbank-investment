@@ -98,7 +98,7 @@ function OverviewView({ goTo }: { goTo: (p: SubPage) => void }) {
                     label="Identity Verification"
                     description="KYC status: Verified"
                     badge={<BadgeWithDot color="success" size="sm">Verified</BadgeWithDot>}
-                    onClick={() => goTo("personal")}
+                    href="/verify"
                 />
                 <MenuItem
                     icon={Wallet04}
@@ -143,23 +143,23 @@ function MenuItem({
     description,
     badge,
     onClick,
+    href,
     isLast,
 }: {
     icon: React.ComponentType<{ className?: string }>;
     label: string;
     description: string;
     badge?: React.ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
+    href?: string;
     isLast?: boolean;
 }) {
-    return (
-        <button
-            onClick={onClick}
-            className={cx(
-                "flex items-center gap-4 px-5 py-4 text-left hover:bg-primary_hover transition duration-100",
-                !isLast && "border-b border-secondary",
-            )}
-        >
+    const classes = cx(
+        "flex items-center gap-4 px-5 py-4 text-left hover:bg-primary_hover transition duration-100",
+        !isLast && "border-b border-secondary",
+    );
+    const content = (
+        <>
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary">
                 <Icon className="size-5 text-fg-quaternary" />
             </div>
@@ -169,8 +169,13 @@ function MenuItem({
             </div>
             {badge && <div className="shrink-0">{badge}</div>}
             <ChevronRight className="size-4 shrink-0 text-fg-quaternary" />
-        </button>
+        </>
     );
+
+    if (href) {
+        return <a href={href} className={classes}>{content}</a>;
+    }
+    return <button onClick={onClick} className={classes}>{content}</button>;
 }
 
 // ─── Personal Information ────────────────────────────────────────────────────
@@ -199,7 +204,7 @@ function PersonalInfoView({ goTo }: { goTo: (p: SubPage) => void }) {
             <div className="rounded-xl border border-secondary bg-primary p-5">
                 <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-sm font-semibold text-primary">Basic Details</h2>
-                    <Button color="link-color" size="sm" iconLeading={Edit05}>
+                    <Button color="link-color" size="sm" iconLeading={Edit05} onPress={() => alert("Edit not available in prototype")}>
                         Edit
                     </Button>
                 </div>
@@ -216,7 +221,7 @@ function PersonalInfoView({ goTo }: { goTo: (p: SubPage) => void }) {
             <div className="rounded-xl border border-secondary bg-primary p-5">
                 <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-sm font-semibold text-primary">Contact Details</h2>
-                    <Button color="link-color" size="sm" iconLeading={Edit05}>
+                    <Button color="link-color" size="sm" iconLeading={Edit05} onPress={() => alert("Edit not available in prototype")}>
                         Edit
                     </Button>
                 </div>
@@ -335,6 +340,7 @@ function PayoutAccountsView({ goTo, onEdit }: { goTo: (p: SubPage) => void; onEd
                                         color="tertiary"
                                         size="sm"
                                         iconLeading={Trash01}
+                                        onPress={() => alert(`Delete ${account.provider}?\n(Not available in prototype)`)}
                                     />
                                 )}
                             </div>
@@ -503,6 +509,7 @@ function AddAccountView({ goTo }: { goTo: (p: SubPage) => void }) {
 function EditAccountView({ goTo, accountId }: { goTo: (p: SubPage) => void; accountId: string | null }) {
     const account = mockAccounts.find((a) => a.id === accountId) ?? mockAccounts[0];
     const isMobile = account.type === "mobile-money";
+    const [isDefault, setIsDefault] = useState(account.isDefault);
 
     return (
         <div className="flex flex-col gap-6">
@@ -593,7 +600,8 @@ function EditAccountView({ goTo, accountId }: { goTo: (p: SubPage) => void; acco
             <Checkbox
                 size="sm"
                 label="Set as default payout account"
-                isSelected={account.isDefault}
+                isSelected={isDefault}
+                onChange={setIsDefault}
             />
 
             <div className="flex items-center justify-between pt-2">
@@ -650,7 +658,7 @@ function SecurityView({ goTo }: { goTo: (p: SubPage) => void }) {
                         type="password"
                     />
                     <div className="flex justify-end">
-                        <Button color="primary" size="sm">
+                        <Button color="primary" size="sm" onPress={() => alert("Password updated! (prototype)")}>
                             Update Password
                         </Button>
                     </div>
@@ -669,7 +677,7 @@ function SecurityView({ goTo }: { goTo: (p: SubPage) => void }) {
                     <Badge color="gray" size="sm">Off</Badge>
                 </div>
                 <div className="mt-4">
-                    <Button color="secondary" size="sm" iconLeading={Shield01}>
+                    <Button color="secondary" size="sm" iconLeading={Shield01} onPress={() => alert("2FA setup not available in prototype")}>
                         Enable 2FA
                     </Button>
                 </div>
@@ -691,7 +699,7 @@ function SecurityView({ goTo }: { goTo: (p: SubPage) => void }) {
                             <p className="text-sm font-medium text-primary">Chrome on MacBook — Kigali, Rwanda</p>
                             <p className="text-xs text-tertiary">Last active 2 hours ago</p>
                         </div>
-                        <Button color="link-destructive" size="sm">
+                        <Button color="link-destructive" size="sm" onPress={() => alert("Session revoked! (prototype)")}>
                             Revoke
                         </Button>
                     </div>
@@ -741,7 +749,7 @@ function NotificationsView({ goTo }: { goTo: (p: SubPage) => void }) {
             </div>
 
             <div className="flex justify-end">
-                <Button color="primary" size="md">
+                <Button color="primary" size="md" onPress={() => alert("Preferences saved! (prototype)")}>
                     Save Preferences
                 </Button>
             </div>
