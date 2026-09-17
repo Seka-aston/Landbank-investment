@@ -68,12 +68,8 @@ export const ExitsScreen = () => {
                 item={selected}
                 onBack={() => setSelected(null)}
                 onApprove={() => updateStatus(selected.id, "approved")}
-                onReject={() =>
-                    updateStatus(
-                        selected.id,
-                        "rejected",
-                        "Minimum holding period of 3 months has not been met",
-                    )
+                onReject={(reason) =>
+                    updateStatus(selected.id, "rejected", reason)
                 }
             />
         );
@@ -247,12 +243,14 @@ function DetailView({
     item: EarlyExitRequest;
     onBack: () => void;
     onApprove: () => void;
-    onReject: () => void;
+    onReject: (reason: string) => void;
 }) {
     const sc = statusConfig[item.status];
     const pct = Math.round(
         (item.elapsedMonths / item.totalTermMonths) * 100,
     );
+    const [showReject, setShowReject] = useState(false);
+    const [reason, setReason] = useState("");
 
     return (
         <div className="p-4 sm:p-6 lg:p-8">
@@ -441,26 +439,72 @@ function DetailView({
                                     calculated payout amount above.
                                 </p>
                             </div>
-                            <div className="flex flex-col gap-3">
-                                <Button
-                                    size="md"
-                                    color="primary"
-                                    iconLeading={CheckCircle}
-                                    onPress={onApprove}
-                                    className="w-full"
-                                >
-                                    Approve Exit
-                                </Button>
-                                <Button
-                                    size="md"
-                                    color="primary-destructive"
-                                    iconLeading={XCircle}
-                                    onPress={onReject}
-                                    className="w-full"
-                                >
-                                    Reject Exit
-                                </Button>
-                            </div>
+                            {!showReject ? (
+                                <div className="flex flex-col gap-3">
+                                    <Button
+                                        size="md"
+                                        color="primary"
+                                        iconLeading={CheckCircle}
+                                        onPress={onApprove}
+                                        className="w-full"
+                                    >
+                                        Approve Exit
+                                    </Button>
+                                    <Button
+                                        size="md"
+                                        color="primary-destructive"
+                                        iconLeading={XCircle}
+                                        onPress={() => {
+                                            setShowReject(true);
+                                            setReason("");
+                                        }}
+                                        className="w-full"
+                                    >
+                                        Reject Exit
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-4">
+                                    <div>
+                                        <label className="mb-1.5 block text-sm font-medium text-secondary">
+                                            Rejection reason
+                                        </label>
+                                        <textarea
+                                            value={reason}
+                                            onChange={(e) =>
+                                                setReason(e.target.value)
+                                            }
+                                            placeholder="Explain why this exit request is being rejected..."
+                                            rows={3}
+                                            className="w-full rounded-lg border border-primary bg-primary px-3.5 py-2.5 text-sm text-primary placeholder:text-placeholder shadow-xs focus:border-brand focus:ring-4 focus:ring-brand-secondary focus:outline-none"
+                                        />
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <Button
+                                            size="sm"
+                                            color="secondary"
+                                            onPress={() =>
+                                                setShowReject(false)
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            color="primary-destructive"
+                                            iconLeading={XCircle}
+                                            isDisabled={!reason.trim()}
+                                            onPress={() =>
+                                                onReject(reason.trim())
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Reject
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
 

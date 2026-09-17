@@ -48,7 +48,12 @@ export const VerificationScreen = () => {
         filter === "all" ? items : items.filter((i) => i.status === filter);
     const pendingCount = items.filter((i) => i.status === "pending").length;
 
-    const updateStatus = (id: string, status: KycStatus, reason?: string) => {
+    const updateStatus = (
+        id: string,
+        status: KycStatus,
+        reason?: string,
+        fields?: string[],
+    ) => {
         setItems((prev) =>
             prev.map((i) =>
                 i.id === id
@@ -56,10 +61,7 @@ export const VerificationScreen = () => {
                           ...i,
                           status,
                           rejectionReason: reason,
-                          rejectedFields:
-                              status === "resubmission"
-                                  ? ["Identity Document"]
-                                  : undefined,
+                          rejectedFields: fields,
                       }
                     : i,
             ),
@@ -70,10 +72,7 @@ export const VerificationScreen = () => {
                       ...prev,
                       status,
                       rejectionReason: reason,
-                      rejectedFields:
-                          status === "resubmission"
-                              ? ["Identity Document"]
-                              : undefined,
+                      rejectedFields: fields,
                   }
                 : prev,
         );
@@ -85,18 +84,15 @@ export const VerificationScreen = () => {
                 item={selected}
                 onBack={() => setSelected(null)}
                 onApprove={() => updateStatus(selected.id, "approved")}
-                onReject={() =>
-                    updateStatus(
-                        selected.id,
-                        "rejected",
-                        "Application does not meet eligibility requirements",
-                    )
+                onReject={(reason) =>
+                    updateStatus(selected.id, "rejected", reason)
                 }
-                onResubmit={() =>
+                onResubmit={(reason, fields) =>
                     updateStatus(
                         selected.id,
                         "resubmission",
-                        "Identity document is unclear — please resubmit",
+                        reason,
+                        fields,
                     )
                 }
             />
@@ -276,10 +272,15 @@ function DetailView({
     item: KycSubmission;
     onBack: () => void;
     onApprove: () => void;
-    onReject: () => void;
-    onResubmit: () => void;
+    onReject: (reason: string) => void;
+    onResubmit: (reason: string, fields: string[]) => void;
 }) {
     const sc = statusConfig[item.status];
+    const [actionMode, setActionMode] = useState<
+        "idle" | "resubmit" | "reject"
+    >("idle");
+    const [reason, setReason] = useState("");
+    const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
     return (
         <div className="p-4 sm:p-6 lg:p-8">
@@ -435,35 +436,182 @@ function DetailView({
                             <h3 className="mb-4 text-md font-semibold text-primary">
                                 Review Actions
                             </h3>
-                            <div className="flex flex-col gap-3">
-                                <Button
-                                    size="md"
-                                    color="primary"
-                                    iconLeading={CheckCircle}
-                                    onPress={onApprove}
-                                    className="w-full"
-                                >
-                                    Approve
-                                </Button>
-                                <Button
-                                    size="md"
-                                    color="secondary"
-                                    iconLeading={AlertTriangle}
-                                    onPress={onResubmit}
-                                    className="w-full"
-                                >
-                                    Request Resubmission
-                                </Button>
-                                <Button
-                                    size="md"
-                                    color="primary-destructive"
-                                    iconLeading={XCircle}
-                                    onPress={onReject}
-                                    className="w-full"
-                                >
-                                    Reject
-                                </Button>
-                            </div>
+
+                            {actionMode === "idle" && (
+                                <div className="flex flex-col gap-3">
+                                    <Button
+                                        size="md"
+                                        color="primary"
+                                        iconLeading={CheckCircle}
+                                        onPress={onApprove}
+                                        className="w-full"
+                                    >
+                                        Approve
+                                    </Button>
+                                    <Button
+                                        size="md"
+                                        color="secondary"
+                                        iconLeading={AlertTriangle}
+                                        onPress={() => {
+                                            setActionMode("resubmit");
+                                            setReason("");
+                                            setSelectedFields([]);
+                                        }}
+                                        className="w-full"
+                                    >
+                                        Request Resubmission
+                                    </Button>
+                                    <Button
+                                        size="md"
+                                        color="primary-destructive"
+                                        iconLeading={XCircle}
+                                        onPress={() => {
+                                            setActionMode("reject");
+                                            setReason("");
+                                        }}
+                                        className="w-full"
+                                    >
+                                        Reject
+                                    </Button>
+                                </div>
+                            )}
+
+                            {actionMode === "resubmit" && (
+                                <div className="flex flex-col gap-4">
+                                    <div>
+                                        <label className="mb-1.5 block text-sm font-medium text-secondary">
+                                            Fields to resubmit
+                                        </label>
+                                        <div className="space-y-2">
+                                            {[
+                                                "Identity Document",
+                                                "Selfie Verification",
+                                                "Proof of Address",
+                                                "Personal Information",
+                                            ].map((field) => (
+                                                <label
+                                                    key={field}
+                                                    className="flex items-center gap-2.5 cursor-pointer"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedFields.includes(
+                                                            field,
+                                                        )}
+                                                        onChange={(e) =>
+                                                            setSelectedFields(
+                                                                (prev) =>
+                                                                    e.target
+                                                                        .checked
+                                                                        ? [
+                                                                              ...prev,
+                                                                              field,
+                                                                          ]
+                                                                        : prev.filter(
+                                                                              (f) =>
+                                                                                  f !==
+                                                                                  field,
+                                                                          ),
+                                                            )
+                                                        }
+                                                        className="size-4 rounded border-primary accent-brand-600"
+                                                    />
+                                                    <span className="text-sm text-secondary">
+                                                        {field}
+                                                    </span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="mb-1.5 block text-sm font-medium text-secondary">
+                                            Reason for resubmission
+                                        </label>
+                                        <textarea
+                                            value={reason}
+                                            onChange={(e) =>
+                                                setReason(e.target.value)
+                                            }
+                                            placeholder="Explain what needs to be corrected..."
+                                            rows={3}
+                                            className="w-full rounded-lg border border-primary bg-primary px-3.5 py-2.5 text-sm text-primary placeholder:text-placeholder shadow-xs focus:border-brand focus:ring-4 focus:ring-brand-secondary focus:outline-none"
+                                        />
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <Button
+                                            size="sm"
+                                            color="secondary"
+                                            onPress={() =>
+                                                setActionMode("idle")
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            color="primary"
+                                            iconLeading={AlertTriangle}
+                                            isDisabled={
+                                                !reason.trim() ||
+                                                selectedFields.length === 0
+                                            }
+                                            onPress={() =>
+                                                onResubmit(
+                                                    reason.trim(),
+                                                    selectedFields,
+                                                )
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Request
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {actionMode === "reject" && (
+                                <div className="flex flex-col gap-4">
+                                    <div>
+                                        <label className="mb-1.5 block text-sm font-medium text-secondary">
+                                            Rejection reason
+                                        </label>
+                                        <textarea
+                                            value={reason}
+                                            onChange={(e) =>
+                                                setReason(e.target.value)
+                                            }
+                                            placeholder="Explain why this application is being rejected..."
+                                            rows={3}
+                                            className="w-full rounded-lg border border-primary bg-primary px-3.5 py-2.5 text-sm text-primary placeholder:text-placeholder shadow-xs focus:border-brand focus:ring-4 focus:ring-brand-secondary focus:outline-none"
+                                        />
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <Button
+                                            size="sm"
+                                            color="secondary"
+                                            onPress={() =>
+                                                setActionMode("idle")
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            color="primary-destructive"
+                                            iconLeading={XCircle}
+                                            isDisabled={!reason.trim()}
+                                            onPress={() =>
+                                                onReject(reason.trim())
+                                            }
+                                            className="flex-1"
+                                        >
+                                            Reject
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
