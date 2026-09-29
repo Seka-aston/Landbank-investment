@@ -106,6 +106,24 @@ function OverviewView({ inv, goTo }: { inv: PortfolioInvestment; goTo: (p: SubPa
                 </div>
             </div>
 
+            {/* Withdraw accrued profit — available any time on active investments */}
+            {inv.status === "active" && (
+                <div className="flex flex-col gap-3 rounded-xl border border-secondary bg-primary p-4 sm:flex-row sm:items-center">
+                    <FeaturedIcon icon={CoinsStacked01} size="md" color="success" theme="light" />
+                    <div className="flex-1">
+                        <p className="text-sm font-semibold text-primary">
+                            {formatRWF(inv.accruedProfit)} profit available to withdraw
+                        </p>
+                        <p className="mt-0.5 text-sm text-tertiary">
+                            Cash out instantly, any day. Your principal stays invested.
+                        </p>
+                    </div>
+                    <Button href={`/withdraw-profit/${inv.id}`} color="primary" size="sm" iconTrailing={ArrowRight}>
+                        Withdraw Profit
+                    </Button>
+                </div>
+            )}
+
             {/* Term progress */}
             <div className="rounded-xl border border-secondary bg-primary p-4">
                 <div className="flex items-center justify-between text-sm">
@@ -449,6 +467,19 @@ function EarlyExitView({ inv, goTo }: { inv: PortfolioInvestment; goTo: (p: SubP
                             <span className="font-medium text-primary">{value}</span>
                         </div>
                     ))}
+                </div>
+            </div>
+
+            <div className="flex w-full items-start gap-3 rounded-lg border border-secondary bg-secondary p-4 text-left">
+                <CoinsStacked01 className="mt-0.5 size-4 shrink-0 text-fg-quaternary" />
+                <div className="flex-1">
+                    <p className="text-sm text-tertiary">
+                        Only need your profit? You can withdraw {formatRWF(inv.accruedProfit)} right now with no charges and keep your
+                        investment active.
+                    </p>
+                    <Button href={`/withdraw-profit/${inv.id}`} color="link-color" size="sm" className="mt-1.5">
+                        Withdraw profit instead
+                    </Button>
                 </div>
             </div>
 
